@@ -1,0 +1,388 @@
+@font-face {
+      font-family: 'PressStart2P';
+      src: url('https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js');
+      font-style: normal;
+      font-weight: 400;
+    }
+    
+    body {
+      background-color: #000;
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Courier New', monospace;
+      color: #fff;
+      text-align: center;
+    }
+    
+    h1 {
+      font-family: 'Courier New', monospace;
+      color: #f55;
+      text-shadow: 0 0 10px #f00, 0 0 20px #f00;
+      letter-spacing: 3px;
+      animation: flicker 4s infinite;
+      margin: 10px 0;
+    }
+    
+    #gameContainer {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  background: black;
+}
+
+    
+    #game {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      margin: 0 auto;
+      border: 4px solid #55f;
+      box-shadow: 0 0 20px #55f, inset 0 0 10px #55f;
+      overflow: hidden;
+      background-color: #000;
+      transform-origin: center center;
+    }
+    
+    /* CRT Effect Overlay */
+    #crt-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    
+    /* Screen Curvature */
+    #crt-curvature {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      box-shadow: inset 0 0 50px rgba(0, 0, 20, 0.6);
+      z-index: 101;
+      pointer-events: none;
+    }
+    
+    /* CRT Flicker */
+    #crt-flicker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      background-color: rgba(255, 255, 255, 0.03);
+      z-index: 102;
+      pointer-events: none;
+      animation: randomFlicker 0.1s infinite;
+    }
+    
+    #rocket {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px; /* Adjust size based on your needs */
+  height: auto;
+}
+
+    
+    .asteroid {
+      position: absolute;
+      background-color: #aaa;
+      border-radius: 50%;
+      box-shadow: 0 0 5px #fff;
+    }
+    
+    .star {
+      position: absolute;
+      background-color: #fff;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+    }
+    
+    .star-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .bullet {
+      position: absolute;
+      background-color: #f55;
+      width: 4px;
+      height: 10px;
+      border-radius: 2px;
+      filter: drop-shadow(0 0 5px #f00);
+    }
+    
+    #score {
+      font-size: 20px;
+      margin: 10px;
+      text-shadow: 0 0 5px #fff;
+    }
+    
+    #lives {
+      font-size: 20px;
+      margin: 10px;
+      text-shadow: 0 0 5px #fff;
+    }
+    
+    .hud-element {
+      animation: pulseGlow 2s infinite;
+    }
+    
+    .game-over {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 36px;
+      color: #f55;
+      text-shadow: 0 0 10px #f00, 0 0 20px #f00;
+      display: none;
+      animation: textPulse 0.5s infinite alternate;
+      z-index: 200;
+    }
+    
+    .start-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+    
+    .start-screen h2 {
+      font-size: 36px;
+      color: #f55;
+      text-shadow: 0 0 10px #f00, 0 0 20px #f00;
+      margin-bottom: 20px;
+      animation: textPulse 1.5s infinite alternate;
+    }
+    
+    .start-screen p {
+      color: #fff;
+      margin-bottom: 30px;
+      text-shadow: 0 0 5px #55f;
+      line-height: 1.5;
+    }
+    
+    .start-button {
+      background-color: #55f;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 20px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      position: relative;
+      overflow: hidden;
+      animation: buttonPulse 1.5s infinite alternate;
+      text-shadow: 0 0 5px #fff;
+      box-shadow: 0 0 10px #55f;
+      transition: all 0.3s ease;
+    }
+    
+    .start-button:hover {
+      background-color: #77f;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #55f, 0 0 30px #55f;
+    }
+    
+    .explosion {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f55, #f80, #ff0);
+      filter: blur(1px);
+      box-shadow: 0 0 20px #f55, 0 0 40px #f00;
+      animation: explode 0.5s ease-out forwards;
+      z-index: 10;
+    }
+    
+    .thruster {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, #ff0, #f80, transparent);
+      border-radius: 50%;
+      left: 10px;
+      top: 40px;
+      filter: blur(2px);
+      animation: thrusterPulse 0.1s infinite alternate;
+      z-index: -1;
+      opacity: 0.8;
+    }
+     #mobile-controls {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    z-index: 1000;
+  }
+
+  .d-pad {
+    display: flex;
+    gap: 15px;
+  }
+
+  .arrow {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  .fire-button {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 0, 0, 0.3);
+    border: 2px solid #f55;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  @media (max-width: 768px) {
+    #game {
+      width: 100vw;
+      height: 60vh;
+    }
+
+    #mobile-controls {
+      display: flex;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+    
+    /* Animations */
+    @keyframes explode {
+      0% { opacity: 1; transform: scale(0.5); }
+      100% { opacity: 0; transform: scale(2); }
+    }
+    
+    @keyframes textPulse {
+      0% { opacity: 0.8; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+    
+    @keyframes buttonPulse {
+      0% { box-shadow: 0 0 5px #55f; }
+      100% { box-shadow: 0 0 15px #55f, 0 0 30px #55f; }
+    }
+    
+    @keyframes pulseGlow {
+      0% { text-shadow: 0 0 5px #fff; }
+      50% { text-shadow: 0 0 10px #fff, 0 0 20px #fff; }
+      100% { text-shadow: 0 0 5px #fff; }
+    }
+    
+    @keyframes thrusterPulse {
+      0% { height: 12px; opacity: 0.7; }
+      100% { height: 18px; opacity: 0.9; }
+    }
+    
+    @keyframes randomFlicker {
+      0% { opacity: 0; }
+      92% { opacity: 0; }
+      94% { opacity: 0.02; }
+      96% { opacity: 0; }
+      98% { opacity: 0.04; }
+      100% { opacity: 0; }
+    }
+    
+    @keyframes flicker {
+      0% { opacity: 1; }
+      3% { opacity: 0.8; }
+      6% { opacity: 1; }
+      9% { opacity: 0.8; }
+      12% { opacity: 1; }
+      15% { opacity: 0.9; }
+      70% { opacity: 1; }
+      72% { opacity: 0.7; }
+      74% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+    
+    /* Level transition animation */
+    @keyframes levelTransition {
+      0% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.05); filter: brightness(1.5); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+    
+    /* Power-up animation */
+    .power-up {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, #5ff, #0ff, #00f);
+      border-radius: 50%;
+      box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+      animation: powerUpPulse 1s infinite alternate;
+      z-index: 5;
+    }
+    
+    @keyframes powerUpPulse {
+      0% { transform: scale(1); box-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
+      100% { transform: scale(1.1); box-shadow: 0 0 15px #0ff, 0 0 30px #0ff; }
+    }
+    
+    /* Level indicator */
+    #level {
+      font-size: 20px;
+      margin: 10px;
+      color: #5ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+    
+    /* Game stats */
+    #game-stats {
+      display: flex;
+      justify-content: space-between;
+      width: 600px;
+      margin: 0 auto;
+    }

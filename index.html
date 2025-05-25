@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cosmic Defender - Retro Arcade Edition</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>COSMIC DEFENDER</h1>
+  <div id="game-stats">
+    <div id="score" class="hud-element">SCORE: 0</div>
+    <div id="level" class="hud-element">LEVEL: 1</div>
+    <div id="lives" class="hud-element">LIVES: 3</div>
+  </div>
+  <div id="game-container">
+    <div id="game">
+      <!-- Star layers for parallax -->
+      <div id="star-layer-1" class="star-layer"></div>
+      <div id="star-layer-2" class="star-layer"></div>
+      <div id="star-layer-3" class="star-layer"></div>
+
+      <div id="start-screen" class="start-screen">
+        <h2>COSMIC DEFENDER</h2>
+        <p>Use LEFT/RIGHT arrows to move<br>SPACE to shoot<br>Destroy asteroids and survive!</p>
+        <button id="start-button" class="start-button">START GAME</button>
+      </div>
+
+      <img id="rocket" src="Rocket.png" alt="Rocket" />
+
+      <div class="thruster"></div>
+
+      <div id="game-over" class="game-over">GAME OVER</div>
+
+      <!-- CRT Effects -->
+      <div id="crt-overlay"></div>
+      <div id="crt-curvature"></div>
+      <div id="crt-flicker"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
